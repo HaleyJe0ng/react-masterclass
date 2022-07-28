@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { fetchCoins } from "../api";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -51,7 +53,7 @@ const Loader = styled.span`
   display: block;
 `;
 
-interface CoinInterface {
+interface ICoin {
   id: string;
   name: string;
   symbol: string;
@@ -66,19 +68,23 @@ interface CoinInterface {
 //black, white, color, icon
 
 function Coins() {
-  const [coins, setCoins] = useState<CoinInterface[]>([]); //우리 state가 coin으로 된 array이다
+  const [coins, setCoins] = useState<ICoin[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     (async () => {
-      const response = await fetch("https://api.coinpaprika.com/v1/coins");
-      const json = await response.json();
+      const response = await fetchCoins();
 
-      setCoins(json.slice(0, 100));
-      console.log(coins);
+      console.log("response.slice(0, 100)", response.slice(0, 100));
+      setCoins(response.slice(0, 100));
+      // console.log("coins", coins); //여기서 왜 값을 받아오지 못하는지? //일단 안들어간다.
       setLoading(false);
-    })(); // 내부에 코드를 짜면 바로 function이 실행됨!
-  }, [coins]);
+    })();
+  }, []);
+
+  useEffect(() => {
+    return () => setLoading(false); // cleanup function을 이용
+  }, []);
 
   return (
     <Container>

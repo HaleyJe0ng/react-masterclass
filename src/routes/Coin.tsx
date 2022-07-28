@@ -7,10 +7,12 @@ import {
   Routes,
   Link,
   useMatch,
+  Outlet,
 } from "react-router-dom";
 import styled from "styled-components";
 import Price from "./Price";
 import Chart from "./Chart";
+import { fetchInfoData, fetchPriceData } from "../api";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -172,23 +174,15 @@ function Coin() {
 
   useEffect(() => {
     (async () => {
-      const infoData = await (
-        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      ).json();
-
-      const priceData = await (
-        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      ).json();
+      const infoData = await fetchInfoData(coinId ?? "");
+      const priceData = await fetchPriceData(coinId ?? "");
 
       setInfo(infoData);
       setPriceInfo(priceData);
       setLoading(false);
     })();
-  }, [coinId]);
+  }, []);
 
-  {
-    console.log("chartMatch", chartMatch);
-  }
   return (
     <Container>
       <Header>
@@ -224,25 +218,22 @@ function Coin() {
               <span>{priceInfo?.max_supply}</span>
             </OverviewItem>
           </Overview>
-
-          <Tabs>
-            <Tab isActive={chartMatch !== null}>
-              {/* 만약 이 URL에 들어와있다면 object를 전달받고, 이 URL에 들어와있지 않으면 null을 전달받는다. */}
-              <Link to={`/${coinId}/chart`} state={{ name: state?.name }}>
-                Chart
-              </Link>
-            </Tab>
-            <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`} state={{ name: state?.name }}>
-                Price
-              </Link>
-            </Tab>
-          </Tabs>
-
-          <Routes>
-            <Route path={`/:coinId/price`} element={<Price />} />
-            <Route path={`/:coinId/chart`} element={<Chart />} />
-          </Routes>
+          <div>
+            <Tabs>
+              <Tab isActive={chartMatch !== null}>
+                {/* 만약 이 URL에 들어와있다면 object를 전달받고, 이 URL에 들어와있지 않으면 null을 전달받는다. */}
+                <Link to={`/${coinId}/chart`} state={{ name: state?.name }}>
+                  Chart
+                </Link>
+              </Tab>
+              <Tab isActive={priceMatch !== null}>
+                <Link to={`/${coinId}/price`} state={{ name: state?.name }}>
+                  Price
+                </Link>
+              </Tab>
+            </Tabs>
+            <Outlet />
+          </div>
         </>
       )}
     </Container>
