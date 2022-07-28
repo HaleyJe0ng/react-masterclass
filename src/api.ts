@@ -23,4 +23,14 @@ export function fetchPriceData(coinId: string) {
     .catch((e) => console.log(e));
 }
 
+export function fetchCoinHistory(coinId: string) {
+  //   const endDate = Math.floor(Date.now() / 1000);
+  //   const startDate = endDate - 60 * 60 * 24 * 7; //일주일을 초로 나타냄
+  //  `https://ohlcv-api.nomadcoders.workers.dev?coinId=${coinId}&start=${startDate}&end=${endDate}`
+  return axios
+    .get(`https://ohlcv-api.nomadcoders.workers.dev?coinId=${coinId}`)
+    .then((response) => response.data)
+    .catch((e) => console.log(e));
+}
+
 //json data의 promise 반환

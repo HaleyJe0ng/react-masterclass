@@ -223,6 +223,7 @@ function Coin() {
               <Tab isActive={chartMatch !== null}>
                 {/* 만약 이 URL에 들어와있다면 object를 전달받고, 이 URL에 들어와있지 않으면 null을 전달받는다. */}
                 <Link to={`/${coinId}/chart`} state={{ name: state?.name }}>
+                  {/* state 전해주지 않으면 redirectHome()이 실행된다 */}
                   Chart
                 </Link>
               </Tab>
