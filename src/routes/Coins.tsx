@@ -78,7 +78,7 @@ function Coins() {
       console.log(coins);
       setLoading(false);
     })(); // 내부에 코드를 짜면 바로 function이 실행됨!
-  }, []);
+  }, [coins]);
 
   return (
     <Container>
@@ -113,6 +113,3 @@ function Coins() {
 }
 
 export default Coins;
-function useEffects(arg0: () => void, arg1: never[]) {
-  throw new Error("Function not implemented.");
-}

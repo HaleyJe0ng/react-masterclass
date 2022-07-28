@@ -8,7 +8,7 @@ function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Coins />}></Route>
-        <Route path="/:coinId" element={<Coin />}></Route>
+        <Route path="/:coinId/*" element={<Coin />}></Route>
         {/* Router에게 URL의 :coinId 부분 값에 관심이 있다고 말해주는 방법 */}
       </Routes>
     </BrowserRouter>
