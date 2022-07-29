@@ -16,7 +16,11 @@ interface IHistorical {
   volume: string;
 }
 
-function Chart() {
+interface IChartProps {
+  isDark: boolean;
+}
+
+function Chart({ isDark }: IChartProps) {
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<IHistorical[]>(); //배열로 선언
   const { coinId } = useParams<Params>();
@@ -50,7 +54,7 @@ function Chart() {
           ]}
           options={{
             theme: {
-              mode: "dark",
+              mode: isDark ? "dark" : "light",
             },
             chart: {
               height: 500,

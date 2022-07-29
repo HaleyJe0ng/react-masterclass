@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { fetchCoins } from "../api";
 
 const Container = styled.div`
@@ -33,7 +32,7 @@ const Img = styled.img`
 
 const Coin = styled.li`
   background-color: white;
-  color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.mainTextColor};
   margin-bottom: 10px;
   padding: 20px;
   border-radius: 15px;
@@ -67,7 +66,11 @@ interface ICoin {
 //https://cryptoicons.org/api/icon/eth/200
 //black, white, color, icon
 
-function Coins() {
+interface ICoinsProps {
+  toggleDark: () => void;
+}
+
+function Coins({ toggleDark }: ICoinsProps) {
   const [coins, setCoins] = useState<ICoin[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -77,7 +80,6 @@ function Coins() {
 
       console.log("response.slice(0, 100)", response.slice(0, 100));
       setCoins(response.slice(0, 100));
-      // console.log("coins", coins); //여기서 왜 값을 받아오지 못하는지? //일단 안들어간다.
       setLoading(false);
     })();
   }, []);
@@ -90,6 +92,7 @@ function Coins() {
     <Container>
       <Header>
         <Title>Coin</Title>
+        <button onClick={toggleDark}>Toggle Mode</button>
       </Header>
       {loading ? (
         <Loader>"Loading..."</Loader>

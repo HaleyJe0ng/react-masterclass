@@ -1,6 +1,7 @@
-import { Fragment } from "react";
-import { createGlobalStyle } from "styled-components";
+import { Fragment, useState } from "react";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import Router from "./Router";
+import { darkTheme, lightTheme } from "./theme";
 
 //렌더링 될 떼 전역스코프에 스타일을 올려주는 컴포넌트
 const GlobalStyle = createGlobalStyle`
@@ -67,12 +68,19 @@ a{
 `;
 
 function App() {
+  const [isDark, setIsDark] = useState(false);
+
+  const toggleDark = () => {
+    setIsDark((current) => !current);
+  };
+
   return (
     <Fragment>
-      {/*유령 컴포넌트(ghost component). 부모 없이 서로 같은 레벨에 위치한
-    컴포넌트를 리턴할 수 있게 해준다. */}
-      <GlobalStyle />
-      <Router />
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        {/* <button onClick={toggleDark}>Toggle Mode</button> */}
+        <GlobalStyle />
+        <Router toggleDark={toggleDark} isDark={isDark} />
+      </ThemeProvider>
     </Fragment>
   );
 }
