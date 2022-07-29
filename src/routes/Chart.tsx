@@ -4,6 +4,8 @@ import { fetchCoinHistory } from "../api";
 import { StyledComponent } from "styled-components";
 import ApexChart from "react-apexcharts"; //자동완성으로 들어가는거 조심..! from "apexcharts" 아님!
 import { ifError } from "assert";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 interface IHistorical {
   close: string;
@@ -16,14 +18,11 @@ interface IHistorical {
   volume: string;
 }
 
-interface IChartProps {
-  isDark: boolean;
-}
-
-function Chart({ isDark }: IChartProps) {
+function Chart() {
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<IHistorical[]>(); //배열로 선언
   const { coinId } = useParams<Params>();
+  const isDark = useRecoilValue(isDarkAtom);
 
   useEffect(() => {
     (async () => {

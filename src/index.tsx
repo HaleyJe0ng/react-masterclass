@@ -1,4 +1,19 @@
-import ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom/client";
 import App from "./App";
+import { RecoilRoot } from "recoil";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const queryClient = new QueryClient();
+
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+
+root.render(
+  <QueryClientProvider client={queryClient}>
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
+  </QueryClientProvider>
+);

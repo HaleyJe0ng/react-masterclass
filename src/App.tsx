@@ -2,6 +2,8 @@ import { Fragment, useState } from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import Router from "./Router";
 import { darkTheme, lightTheme } from "./theme";
+import { isDarkAtom } from "./atoms";
+import { useRecoilValue } from "recoil";
 
 //렌더링 될 떼 전역스코프에 스타일을 올려주는 컴포넌트
 const GlobalStyle = createGlobalStyle`
@@ -68,18 +70,13 @@ a{
 `;
 
 function App() {
-  const [isDark, setIsDark] = useState(false);
-
-  const toggleDark = () => {
-    setIsDark((current) => !current);
-  };
-
+  const isDark = useRecoilValue(isDarkAtom);
   return (
     <Fragment>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         {/* <button onClick={toggleDark}>Toggle Mode</button> */}
         <GlobalStyle />
-        <Router toggleDark={toggleDark} isDark={isDark} />
+        <Router />
       </ThemeProvider>
     </Fragment>
   );

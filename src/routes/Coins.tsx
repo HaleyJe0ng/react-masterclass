@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchCoins } from "../api";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -66,13 +68,11 @@ interface ICoin {
 //https://cryptoicons.org/api/icon/eth/200
 //black, white, color, icon
 
-interface ICoinsProps {
-  toggleDark: () => void;
-}
-
-function Coins({ toggleDark }: ICoinsProps) {
+function Coins() {
   const [coins, setCoins] = useState<ICoin[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const isDark = useRecoilValue(isDarkAtom);
+  const setterFn = useSetRecoilState(isDarkAtom);
 
   useEffect(() => {
     (async () => {
@@ -88,11 +88,15 @@ function Coins({ toggleDark }: ICoinsProps) {
     return () => setLoading(false); // cleanup function을 이용
   }, []);
 
+  const toggelDarkAtom = () => {
+    setterFn((prev) => !prev);
+  };
+
   return (
     <Container>
       <Header>
         <Title>Coin</Title>
-        <button onClick={toggleDark}>Toggle Mode</button>
+        <button onClick={toggelDarkAtom}>Toggle Mode</button>
       </Header>
       {loading ? (
         <Loader>"Loading..."</Loader>
